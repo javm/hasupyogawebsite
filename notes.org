@@ -1,0 +1,45 @@
+# Installing PHP 7.2
+apt-get install php7.2 php7.2-fpm php7.2-pgsql php7.2-gd php7.2-xml
+
+	root /var/www/html;
+
+	# Add index.php to the list if you are using PHP
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+	}
+
+	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+	#
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+	#
+	#	# With php5-cgi alone:
+	#	fastcgi_pass 127.0.0.1:9000;
+	#	# With php5-fpm:
+		fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+	}
+
+
+# Generating ssl certificate
+mkdir -p /etc/nginx/ssl
+cd /etc/nginx/ssl
+
+Then generate a new self signed SSL certificate with the openssl command below:
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/hasupyoga.key -out /etc/nginx/ssl/hasupyoga.crt
+
+Fill in the requested info. The SSL certificate file has been generated, now change the permissions of the private key file "hasupyoga.key" to 600:
+
+chmod 600 hasupyoga.key
+
+# MySQL in dreamhost
+database: hasupyogadb
+
+user: hasupyoga
+passwd:   pfYvd7PNmSXj
